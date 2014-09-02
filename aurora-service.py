@@ -21,7 +21,7 @@ def get_response():
 
 def get_forecast_from_html(html):
     tree = lxml.html.fromstring(html)
-    sel = CSSSelector('.transtab > pre:nth-child(11) > p:nth-child(1) > strong:nth-child(1)')
+    sel = CSSSelector('.transtab > pre:nth-child(12)')
     forecast = sel(tree)
     forecast = forecast[0].text_content()
     return forecast
@@ -41,12 +41,21 @@ def parse_and_print_activity_level_if_above_threshold(forecast):
             time = kpvalues[0]
             # first index = time, so lets remove it
             kpvalues = kpvalues[1:]
+            
+            ### conver to integer and catch the case when theres a storm: (G1), (G2) etc
+            kpvalue = []
             # and to Integer land we go
-            kpvalues = [int(x) for x in kpvalues]
+            for value in kpvalues:
+                try:
+                    kpvalue.append(int(value))
+                except:
+                    pass
+
+            kpvalues = kpvalue
             auroras = [(Forecast(date=today + datetime.timedelta(days=index), time=time, kp=x)) if x >= KP_THRESHOLD else None for index, x in enumerate(kpvalues)]
             for forecast in [x for x in auroras if x is not None]:
                 # ignore if this forecast is for a time already passed
-                hourthreshold = int(time[:2])
+                hourthreshold = int(time[:2]) 
                 if not (forecast.date == now.date() and now.hour > hourthreshold):
                     fcast = ("%s %s: Aurora might be visible: KP %d" % (forecast.date, forecast.time, forecast.kp))
                     visibles.append(fcast)
