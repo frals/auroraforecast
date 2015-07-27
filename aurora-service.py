@@ -8,7 +8,7 @@ from lxml.cssselect import CSSSelector
 
 
 BASE_URL = "http://www.aurora-service.eu/aurora-forecast/"
-KP_THRESHOLD = 4
+KP_THRESHOLD = 5
 
 class Forecast:
     def __init__(self, **kwargs):

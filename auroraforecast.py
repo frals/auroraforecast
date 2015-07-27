@@ -22,7 +22,7 @@ def get_activity_from_html(html):
 def get_activity_level(actstring):
     actlevel = re.search("level-([0-9])l", activity)
     if actlevel == None:
-        print "No forecast for date"
+        # print "No forecast for date"
         return None
      
     return actlevel.groups()[0]
