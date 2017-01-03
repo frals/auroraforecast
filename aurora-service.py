@@ -21,7 +21,7 @@ def get_response():
 
 def get_forecast_from_html(html):
     tree = lxml.html.fromstring(html)
-    sel = CSSSelector('.transtab > pre:nth-child(12)')
+    sel = CSSSelector('.transtab > pre:nth-child(6)')
     forecast = sel(tree)
     forecast = forecast[0].text_content()
     return forecast
@@ -41,7 +41,7 @@ def parse_and_print_activity_level_if_above_threshold(forecast):
             time = kpvalues[0]
             # first index = time, so lets remove it
             kpvalues = kpvalues[1:]
-            
+
             ### conver to integer and catch the case when theres a storm: (G1), (G2) etc
             kpvalue = []
             # and to Integer land we go
